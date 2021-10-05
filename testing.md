@@ -1,16 +1,372 @@
-# javascript testing
+# 1. Introduction to Programming Concepts
 
+>"There is no royal road to geometry."  
+>"Just follow the yellow brick road."  
+>\- Euclid's reply to Ptolemy, Euclid (c. 300 BC)  
+>\- The Wonderful Wizard of Oz, L. Frank Baum (1856–1919)
 
-<p id="p1">hello world</p>
+- In this chapter, you will get introduced to the most important concepts in programming.
+    - Later chapters will give a deeper understanding of these concepts (and add other concepts).
 
-<script>
-    document.getElementById("p1").innerHTML = "New text!";
-</script>
+## 1. Calculator
+- In Mozart, type: `{Browse 9999*9999}`
+    - To compile that line, press: `ctrl-. ctrl-l`
+- Result: `99980001`
+- Info:
+    - The curly braces are used for a procedure or function call.
+    - Browse is a procedure that displays the one argument in the browser window.
 
+## 2. Variables
+- Declare a variable (press `ctrl-. ctrl-b` to compile the whole buffer):
+```
+declare
+V = 9999 * 9999
+{Browse V*V}
+```
+- Info:
+    - Variables are short-cuts for values, they cannot be assigned more than once. You *can* declare another variable with the same name.
+    - The declare statement creates a new **store variable** and makes the **variable identifier** refer to it.
+- Result: `9996000599960001`
 
-<a href="javascript:function my_bookmarklet()
-                {alert('Hello World');}
-                my_bookmarklet();">Hello</a>
-                
+#### Excercise 1
+- Calculate 2^100 without typing 2\*2\*2... with one hundred twos.
+    <details>
+        <summary>Hint</summary>
+        Use variables to store intermediate results.
+    </detalis>
 
-[Hello](javascript:function my_bookmarklet(\){alert('Hello World'\);}my_bookmarklet(\);)
+#### Excercise 2
+- Calculate 100! without typing 1\*2\*3... until 100. Can it be done?
+    <details>
+        <summary>Hint</summary>
+        It can't be done (that simply).
+    </detalis>
+
+## 3. Functions
+
+### Factorial
+- Factorial definition: <img src="https://render.githubusercontent.com/render/math?math=\large n! = 1*2*...*(n-1)*n">
+- Factorial of 10: `{Browse 1*2*3*4*5*6*7*8*9*10}`
+- Result: `3628800`
+- Define a function:
+```
+declare
+fun {Fact N}
+    if N==0 then
+        1
+    else
+        N*{Fact N-1}
+    end
+end
+```
+- Info:
+    - The function body contains the **if expression** instruction.
+    - **Recursion**: function is calling itself.
+    - Fact mathematical recursive definition:
+        - <img src="https://render.githubusercontent.com/render/math?math=\large 0! = 1">
+        - <img src="https://render.githubusercontent.com/render/math?math=\large n! = n*(n-1)! \quad if \quad n>0">
+- Call the function *{Fact 10}* inside of the Browse procedure to display the result: `{Browse {Fact 10}}`
+- Result: `3628800`
+- `{Browse {Fact 100}}`
+- Result: `933 26215 44394 41526 81699 23885 62667 00490 71596 82643 81621 46859 29638 95217 59999 32299 15608 94146 39761 56518 28625 36979 20827 22375 82511 85210 91686 40000 00000 00000 00000 00000`
+
+### Combinations
+- Combination definition: <img src="https://render.githubusercontent.com/render/math?math=\large \binom{n}{r} = \frac{n!}{r!(n-r)!}">
+- Combination defined in Oz:
+```
+declare
+fun {Comb N R}
+    {Fact N} div ({Fact R}*{Fact N-R})
+end
+```
+- Info:
+    - **Functional abstraction**: using existing functions to define a new function.
+- `{Comb 10 3}`
+- Result: `120`
+
+## 4. Lists
+- List is a sequence of elements: `{Browse [5 6 7 8]}`
+- *[5 6 7 8]* is a short-cut.
+    - A list is a chain of links, and each link contains two things: a list element and a reference to the rest of the chain.
+    - *[6 7]* is linked as follows: *6 -> 7 -> nil*, where *nil* is the  empty list.
+        - In Oz: `Z=nil  Y=7|Z  X=6|Y`
+        - Now *X* references the list *[6 7]*.
+- *H|T* is a list pair (often called a [cons](https://en.wikipedia.org/wiki/Cons))
+- Example:
+```
+declare
+H = 5
+T = [6 7 8]
+{Browse H|T}
+```
+- Result: `[5 6 7 8]`
+- Info:
+    - H|T = 5 | [6 7 8]
+    - Head: *5*
+    - Tail: *[6 7 8]*
+- Get back the head and tail:
+```
+declare
+L = [5 6 7 8]
+{Browse L.1}
+{Browse L.2}
+```
+- Result:
+```
+5
+[6 7 8]
+```
+
+### Pattern matching
+```
+declare
+L = [5 6 7 8]
+case L of H|T then
+    {Browse H} {Browse T}
+end
+```
+- Result is the same as the last: *5* and *[6 7 8]*.
+- Info:
+    - Case instruction declares two local variables: *H* and *T*.
+    - Case decomposes L according to the pattern *H|T*.
+
+## 5. Functions over lists
+- Pascal's triangle:
+```
+   1
+  1 1
+ 1 2 1
+1 3 3 1
+```
+- We will define a function, *{Pascal N}*, which calculates the nth row of Pascal's triangle.
+- Calculating the fifth row from the fourth:
+    - Fourth row: *[1 3 3 1]*
+    - Shift the fourth row left and right (by adding a zero to the right and left), and sum them.
+        - *[1 3 3 1 0] + [0 1 3 3 1] = [1 4 6 4 1]*, which is the fifth row.
+
+### Pascal's triangle in Oz:
+```
+declare Pascal AddList ShiftLeft ShiftRight
+
+fun {Pascal N}
+    if N==1 then [1]
+    else
+        {AddList {ShiftLeft {Pascal N-1}}
+                 {ShiftRight {Pascal N-1}}}
+    end
+end
+
+fun {ShiftLeft L}
+    case L of H|T then
+        H|{ShiftLeft T}
+    else [0] end
+end
+
+fun {ShiftRight L} 0|L end
+
+fun {AddList L1 L2}
+    case L1 of H1|T1 then
+        case L2 of H2|T2 then
+            H1+H2|{AddList T1 T2}
+        end
+    else nil
+    end
+end
+```
+- Info:
+    - Top-down software development: first writing the main function and filling in the blanks afterwards.
+- Execute: `{Pascal 20}`
+- Result: `[1 19 171 969 3876 11628 27132 50388 75582 92378 92378 75582 50388 27132 11628 3876 969 171 19 1]`
+
+## 6. Complexity
+- The Pascal function defined above gets very slow with larger numbers.
+```
+fun {Pascal N}
+    if N==1 then [1]
+    else
+        {AddList {ShiftLeft {Pascal N-1}}
+                 {ShiftRight {Pascal N-1}}}
+    end
+end
+```
+- Why?
+    <details>
+        <summary>Answer</summary>
+        Calling {Pascal N} will call {Pascal N-1} two times.<br/>
+        Calling {Pascal 30} will call {Pascal 1} 2^29 times, which is about half a billion.
+    </detalis>
+- FastPascal function definition:
+```
+fun {FastPascal N}
+    if N==1 then [1]
+    else L in
+        L = {FastPascal N-1}
+        {AddList {ShiftLeft L} {ShiftRight L}}
+    end
+end
+```
+- Info:
+    - Local variable is declared with `L in`: that is just like using declare, except the variable exists only between the **else** and the **end**.
+- Time complexity:
+    - The execution time of a program as a function of input size.
+    - Time complexity of {Pascal N} and {FastPascal N}?
+    <details>
+        <summary>Answer</summary>
+        {Pascal N}: ~2^n<br/>
+        {FastPascal N}: ~n^2
+    </detalis>
+
+## 7. Lazy evaluation
+- Up until now everything we did was with **eager evaluation**, functions did their calculations as soon as they were called.
+- **Lazy evaluation**: a calculation is done only when the result is needed.
+- Example function that calculates a list of integers, from N to infinity:
+```
+fun lazy {Ints N}
+    N | {Ints N+1}
+end
+```
+- Info:
+    - {Ints 0} calculates the infinite list 0|1|2|3|4|... which looks like an infinite loop.
+    - Lazy evaluation ensures that the function will calculate only what is needed.
+    - {Ints 0} will display nothing, as nothing yet needed to be calculated.
+    - {Ints 0}.1 will display *0* as that is the head (the first element) of the list.
+- `case {Ints 0} of A|B|C|_ then {Browse A+B+C} end` displays `3`.
+
+#### Excercise 3
+- Define a function that calculates the sum of a list of integers:
+```
+fun {SumList L}
+    case L of X|L1 then X+{SumList L1}
+    else 0 end
+end
+```
+- What happens if we call {SumList {Ints 0}}? Is this a good idea?
+    <details>
+        <summary>Hint</summary>
+        Sum needs each of the elements in the list.
+    </detalis>
+
+### Lazy calculation of Pascal's triangle
+```
+fun lazy {PascalList Row}
+    Row | { PascalList
+                {AddList {ShiftLeft Row}
+                         {ShiftRight Row}} }
+end
+```
+```
+declare
+L = {PascalList [1]}
+```
+- Try:
+    - `{Browse L}`
+    - `{Browse L.1}`
+    - `{Browse L.2.1}`
+
+#### Excercise 4
+- Instead of writing a lazy function, we can write a function that directly calculates *N* rows starting from an initial *Row*:
+```
+fun {PascalList2 N Row}
+    if N==1 then
+        [Row]
+    else
+        Row | {PascalList2 N-1
+                   {AddList {ShiftLeft Row}
+                            {ShiftRight Row}}}
+    end
+end
+```
+- Why is the lazy version better? Think of an example in which the lazy version is the more optimal solution.
+    <details>
+        <summary>Hint1</summary>
+        <code>{Browse {PascalList2 10 [1]}}</code> would display the first 10 rows of the Pascal's triangle.<br/>
+        What if we call the function again, but this time we want the first 11 rows? How is the lazy version more optimal?
+        <details>
+            <summary>Hint2</summary>
+            Lazy evaluation does not calculate twice, it can continue where it left off.
+        </detalis>
+    </detalis>
+
+## 8. Higher-order programming
+- We define a generic function that accepts a function as an argument, so we can construct different variations of Pascal's triangle with operations other than addition:
+```
+fun {GenericPascal Op N}
+    if N==1 then [1]
+    else L in
+        L = {GenericPascal Op N-1}
+        {OpList Op {ShiftLeft L} {ShiftRight L}}
+    end
+end
+
+fun {OpList Op L1 L2}
+    case L1 of H1|T1 then
+        case L2 of H2|T2 then
+            {Op H1 H2}|{OpList Op T1 T2}
+        end
+    else nil end
+end
+```
+- Info:
+    - The ability to pass functions as arguments is known as **higher-order programming**.
+    - We are using the old versions of *ShiftLeft* and *ShiftRight*, *AddList* is replaced with *OpList*.
+
+#### Excercise 5
+- Define the function *Add* such that when used in *{GenericPascal Add N}* you get the same result as with the original Pascal function.
+    <details>
+        <summary>Hint</summary>
+        Function Add should perform addition of the two numbers passed as arguments.
+    </detalis>
+- Define the function *FastPascal* using *GenericPascal*.
+    <details>
+        <summary>Hint</summary>
+        {GenericPascal Add N} is equivalent to {FastPascal N}.
+    </detalis>
+- Define the function *Xor* that does an exclusive-or operation, and try using it in *{GenericPascal Xor N}*.
+<details>
+        <summary>Hint</summary>
+        <table>
+        <tbody>
+          <tr>
+            <td>X</td>
+            <td>Y</td>
+            <td>X xor Y</td>
+          </tr>
+          <tr>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <td>0</td>
+            <td>1</td>
+            <td>1</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>0</td>
+            <td>1</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>1</td>
+            <td>0</td>
+          </tr>
+        </tbody>
+        </table>
+</detalis>
+- Additional info:
+    - The Xor Pascal's triangle shows for each number in the Pascal's triangle if it is odd or even (without calculating the numbers).
+    - When visualized, it resembles <a href="https://en.wikipedia.org/wiki/Sierpi%C5%84ski_triangle">Sierpiński triangle</a>:
+        <img src="https://raw.githubusercontent.com/karlo-babic/paradigms/main/img/sierpinski_triangle.png">
+
+## 9. Concurrency
+
+## ...
+
+---
+
+<div align="center"><b>
+  <a href="Software.html" style="font-size:64px; text-decoration:none"> < </a>
+  <a href="Contents.html" style="font-size:64px; text-decoration:none"> ^ </a>
+  <a href="2-Declarative-Computation-Model.html" style="font-size:64px; text-decoration:none"> > </a>
+</b></div>
