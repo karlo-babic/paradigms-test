@@ -357,7 +357,8 @@ end
 - Additional info:
     - The Xor Pascal's triangle shows for each number in the Pascal's triangle if it is odd or even (without calculating the numbers).
     - When visualized, it resembles [Sierpiński triangle](https://en.wikipedia.org/wiki/Sierpi%C5%84ski_triangle):
-        - <img src="https://raw.githubusercontent.com/karlo-babic/paradigms/main/img/sierpinski_triangle.png">
+
+<p align="center"><img src="https://raw.githubusercontent.com/karlo-babic/paradigms/main/img/sierpinski_triangle.png"></p>
 
 ## 9. Concurrency
 
