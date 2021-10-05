@@ -322,7 +322,7 @@ end
         {GenericPascal Add N} is equivalent to {FastPascal N}.
     </detalis>
 - Define the function *Xor* that does an exclusive-or operation, and try using it in *{GenericPascal Xor N}*.
-<details>
+    <details>
         <summary>Hint</summary>
         <table>
         <tbody>
@@ -353,7 +353,7 @@ end
           </tr>
         </tbody>
         </table>
-</detalis>
+    </detalis>
 - Additional info:
     - The Xor Pascal's triangle shows for each number in the Pascal's triangle if it is odd or even (without calculating the numbers).
     - When visualized, it resembles <a href="https://en.wikipedia.org/wiki/Sierpi%C5%84ski_triangle">Sierpiński triangle</a>:
