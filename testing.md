@@ -361,8 +361,44 @@ end
 <p align="center"><img src="https://raw.githubusercontent.com/karlo-babic/paradigms/main/img/sierpinski_triangle.png"></p>
 
 ## 9. Concurrency
+- Concurrency allows several independant activities to execute at their own pace.
+- Difference between concurrency and parallelism:
 
-## ...
+<p align="center"><img src="https://raw.githubusercontent.com/karlo-babic/paradigms/main/img/concurrent_parallel.png"></p>
+
+- Calling the slow *Pascal* function in its thread, concurrently:
+```
+thread P in
+    P = {Pascal 25}
+    {Browse P}
+end
+{Browse 99*99}
+```
+- Info:
+    - This creates a new thread.
+    - Inside of the thread, {Pascal 25} is calculated and displayed.
+    - The thread takes some time to finish, but the result of *99\*99* is displayed immediately wihout waiting for *Pascal* to finish.
+
+## 10. Dataflow
+- Dataflow: if a variable is not yet bound to a value the operation that needs that variable will wait until the variable is bound (in another operation or thread).
+- Simple dataflow example:
+
+<p align="center"><img src="https://raw.githubusercontent.com/karlo-babic/paradigms/main/img/dataflow.png"></p>
+
+- Dataflow and concurreny:
+```
+declare X
+thread
+   {Delay 5000}
+   X=99
+end
+{Browse start} {Browse X*X}
+```
+- Dataflow properties:
+    - Calculations work correctly independant of how they are partitioned between threads.
+    - Calculations are patient, they do not signal errors (they just wait).
+
+## ... 60
 
 ---
 
