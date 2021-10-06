@@ -398,7 +398,42 @@ end
     - Calculations work correctly independant of how they are partitioned between threads.
     - Calculations are patient, they do not signal errors (they just wait).
 
-## ... 60
+## 11. State
+- Functions that can change their behaviour and learn from their past need memory to do so.
+- That kind of memory is called **explicit state**.
+
+### A memory cell
+- A memory cell is one way to define explicit state.
+- Normally you call a memory cell "variable", not to confuse it with the variables in the previous sections which are more like mathematical variables (shortcuts for values, not storages).
+- Example usage:
+```
+declare
+C = {NewCell 0}
+C := @C + 1
+{Browse @C}
+```
+- Info:
+    - `C = {NewCell 0}` creates a cell C with initial content *0*.
+    - In `C := @C + 1`:
+        - `@C` reads the current value,
+        - `+ 1` adds one to that value,
+        - `C :=` writes the new value into the cell.
+    - `{Browse @C}` displays the value stored in C.
+
+### Adding memory to a function
+- A simple function with memory that counts how many times the function was called:
+```
+declare
+C = {NewCell 0}
+fun {Add A B}
+   C := @C + 1
+   A+B
+end
+```
+
+## 12. Objects
+
+## ... 62
 
 ---
 
