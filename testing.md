@@ -431,9 +431,72 @@ fun {Add A B}
 end
 ```
 
-## 12. Objects
+#### Excercise 6
+- Define two functons, *Bump* and *Read*:
+    - *Bump* adds one to the counter (to a memory cell) and returns the current value of that cell,
+    - *Read* returns the current value of the memory cell.
 
-## ... 62
+## 12. Objects
+- In the previous excercise you implemented functions *Bump* and *Read* that update and read a memory cell.
+    - You actually implemented an object, which can be improved (in the next excercise).
+- The *Bump/Read* object writes and reads from a memory cell. That memory cell can be accessed from anywhere in the program (which is not secure).
+- To make that object better, we can isolate the memory cell so it can be accessed only from the inside of the object.
+    - This property is called **encapsulation**.
+
+#### Excercise 7
+- Improve the *Bump/Read* object implementation by referencing the memory cell *C* with a local variable:
+```
+declare
+local C in
+    %% your implementation of the object %%
+end
+```
+
+## 13. Classes
+- In the last section we defined one counter object (*Bump/Read*).
+- It would be useful to have more than one counter object, so we can count different things at different rates.
+- **Class** is a factory that produces objects.
+- Below is a class that creates instances of the *counter*:
+```
+declare
+fun {NewCounter}
+    C Bump Read in
+        C = {NewCell 0}
+        fun {Bump}
+            C := @C + 1
+            @C
+        end
+        fun {Read}
+            @C
+        end
+        counter(bump:Bump read:Read)
+end
+```
+- Info:
+    - *NewCounter* is a function that creates a new (local) cell and returns new *Bump* and *Read* functions for it.
+        - A function returning a function is another form of **higher-order programming**.
+    - Functions *Bump* and *Read* are grouped together into one data structure called a *record* - *counter(bump:Bump read:Read)*.
+        - The record has a label (*counter*), and two fields (*bump* and *read*).
+- Now we can create two counters and use them:
+```
+declare
+Ctr1 = {NewCounter}
+Ctr2 = {NewCounter}
+
+{Browse {Ctr1.bump}}
+{Browse {Ctr1.bump}}
+{Browse {Ctr2.read}}
+```
+- Info:
+    - Each counter has its own internal memory.
+    - We access functions *Bump* and *Read* with the "." (dot) operator.
+- Programming with classes and objects is called **object-based programming**.
+    - Adding *inheritance* to object-based programming gives *object-oriented programming*.
+    - *Inheritance*: a new class can be defined in terms of existing classes by specifying how the new class is different.
+
+## 14. Nondeterminism and time
+
+## ... 64
 
 ---
 
