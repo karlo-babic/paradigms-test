@@ -476,7 +476,7 @@ end
     - *NewCounter* is a function that creates a new (local) cell and returns new *Bump* and *Read* functions for it.
         - A function returning a function is another form of **higher-order programming**.
     - Functions *Bump* and *Read* are grouped together into one data structure called a *record* - *counter(bump:Bump read:Read)*.
-        - The record has a label (*counter*), and two fields (*bump* and *read*).
+        - The record has a label ("*counter*"), and two fields ("*bump*" and "*read*").
 - Now we can create two counters and use them:
 ```
 declare
