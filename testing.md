@@ -360,6 +360,12 @@ end
 
 <p align="center"><img src="https://raw.githubusercontent.com/karlo-babic/paradigms/main/img/sierpinski_triangle.png"></p>
 
+#### Assignment 1
+- Use this loop instruction to explore the Pascal's triangle variations: `for I in 1..10 do {Browse {GenericPascal Op I}} end`
+- Try variations with operations: subtraction, multiplication, etc.
+    - Why does multiplication give a triangle with all zeroes?
+    - Make a new multiplication function that will avoid the problem above.
+
 ## 9. Concurrency
 - Concurrency allows several independant activities to execute at their own pace.
 - Difference between concurrency and parallelism:
@@ -420,6 +426,28 @@ C := @C + 1
         - `C :=` writes the new value into the cell.
     - `{Browse @C}` displays the value stored in C.
 
+#### Assignment 2
+- You are given two code fragments, the first uses variables:
+```
+local X in
+    X = 23
+    local X in
+        X = 44
+    end
+    {Browse X}
+end
+```
+- The second uses a cell:
+```
+local X in
+    X = {NewCell 23}
+    X := 44
+    {Browse @X}
+end
+```
+- In the first, the indentifier X refers to two different variables. In the second, X refers to a cell.
+    - What does *Browse* display in each fragment? Explain.
+
 ### Adding memory to a function
 - A simple function with memory that counts how many times the function was called:
 ```
@@ -427,7 +455,7 @@ declare
 C = {NewCell 0}
 fun {Add A B}
    C := @C + 1
-   A+B
+   A + B
 end
 ```
 
@@ -435,6 +463,28 @@ end
 - Define two functons, *Bump* and *Read*:
     - *Bump* adds one to the counter (to a memory cell) and returns the current value of that cell,
     - *Read* returns the current value of the memory cell.
+
+#### Assignment 3
+- Let us define a function {Accumulate N} that accumulates all its inputs.
+- Example:
+```
+{Browse {Accumulate 5}}
+{Browse {Accumulate 100}}
+{Browse {Accumulate 45}}
+```
+- This should display 5, 105, and 150.
+- Here is a wrong way to write *Accumulate*:
+```
+declare
+fun {Accumulate N}
+    Acc in
+        Acc = {NewCell 0}
+        Acc := @Acc + N
+        @Acc
+end
+```
+- What is wrong with this definition?
+    - Correct it.
 
 ## 12. Objects
 - In the previous excercise you implemented functions *Bump* and *Read* that update and read a memory cell.
@@ -527,20 +577,48 @@ end
 ```
 - What is the content of C after this program executes? 
     <details>
-        <summary>Hint1</summary>
+        <summary>Hint</summary>
         Thread execution is interleaved.
         <details>
-            <summary>Hint2</summary>
+            <summary>Answer</summary>
             <img src="https://raw.githubusercontent.com/karlo-babic/paradigms/main/img/interleaving.png">
         </detalis>
     </detalis>
+- Programming with state and concurreny:
+    - If possible, do not use state and concurrency together (as their interaction brings complications).
+    - If a program does need to have both, it is probably possible to design it so state and concurrency interact only in a very small part of the program.
 
-## ... 64
+## 15. Atomicity
+- An operation is atomic if no intermidiate states can be observed.
+- A solution to the interleaving problem from the previous example is to make each thread body (that interacts with the same memory cell) atomic.
+    - With a new language entity, **lock**.
+    - A lock has the property that only one thread at a time can be executing inside.
+```
+declare
+C = {NewCell 0}
+L = {NewLock}
+thread
+    lock L then I in
+        I = @C
+        C := I + 1
+    end
+end
+thread
+    lock L then J in
+        J = @C
+        C := J + 1
+    end
+end
+```
+- Info:
+    - In this version the final result is always 2.
+    - `{NewLock}` creates a new lock.
+    - `lock L then ... end`: code between *then* and *end* is inside of the lock L.
 
 ---
 
 <div align="center"><b>
   <a href="Software.html" style="font-size:64px; text-decoration:none"> < </a>
   <a href="Contents.html" style="font-size:64px; text-decoration:none"> ^ </a>
-  <a href="2-Declarative-Computation-Model.html" style="font-size:64px; text-decoration:none"> > </a>
+  <a href="2-Declarative-Programming-Techniques.html" style="font-size:64px; text-decoration:none"> > </a>
 </b></div>
