@@ -495,6 +495,45 @@ Ctr2 = {NewCounter}
     - *Inheritance*: a new class can be defined in terms of existing classes by specifying how the new class is different.
 
 ## 14. Nondeterminism and time
+- Nondeterminism by itself is not a problem, we already have it with concurrency.
+    - We lack the knowledge of the exact time when each operation executes (in different threads).
+    - Nondeterminism becomes difficult when it becomes *observable* (*race condition*).
+- Having both *state* and *concurrency* at the same time becomes tricky (nondeterminism becomes observable).
+    - The same program can give different results from one execution to the next because the order in which threads access the state can change from one execution to the next.
+- An example of observable nondeterminism (race condition):
+```
+declare
+C = {NewCell 0}
+thread
+    C := 1
+end
+thread
+    C := 2
+end
+```
+- What is the content of C after this program executes?
+- Second example of observable nondeterminism:
+```
+declare
+C = {NewCell 0}
+thread I in
+    I = @C
+    C := I + 1
+end
+thread J in
+    J = @C
+    C := J + 1
+end
+```
+- What is the content of C after this program executes? 
+    <details>
+        <summary>Hint1</summary>
+        Thread execution is interleaved.
+        <details>
+            <summary>Hint2</summary>
+            <img src="https://raw.githubusercontent.com/karlo-babic/paradigms/main/img/interleaving.png">
+        </detalis>
+    </detalis>
 
 ## ... 64
 
