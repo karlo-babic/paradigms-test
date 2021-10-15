@@ -27,7 +27,9 @@
 - Starts with an initial state S<sub>0</sub> and transforms the state in steps until reaching a final state S<sub>final</sub>:
     - S<sub>0</sub> -> S<sub>1</sub> -> ... -> S<sub>final</sub>
 - General schema:
+
 <p align="center"><img src="https://raw.githubusercontent.com/karlo-babic/paradigms/main/img/general_schema.png"></img></p>
+
 - Info:
     - Functions *IsDone* and *Transform* are problem dependent.
     - Stack size does not grow when executing *Iterate*.
