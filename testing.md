@@ -450,14 +450,12 @@ end
 
 #### Sorting with mergesort
 - Lets define a function that takes a list of numbers and returns a new list sorted in ascending order.
-- We use the mergesort algorithmm which is based on a simple divide-and-conquer strategy:
+- We use the <a href="https://www.youtube.com/embed/ZRPoEKHXTJg">mergesort</a> algorithm which is based on a simple divide-and-conquer strategy:
     - Split the list into two smaller lists (of approximately equal length).
     - Use mergesort recursively to sort two smaller lists.
     - Merge the two sorted lists together.
 
 <p align="center"><img src="https://raw.githubusercontent.com/karlo-babic/paradigms/main/img/mergesort.png"></p>
-
-<div><p align="center"><iframe width="560" height="315" src="https://www.youtube.com/embed/ZRPoEKHXTJg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></p></div>
 
 ```
 proc {Split Xs ?Ys ?Zs}
