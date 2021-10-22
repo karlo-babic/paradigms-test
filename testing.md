@@ -457,7 +457,7 @@ end
 
 <p align="center"><img src="https://raw.githubusercontent.com/karlo-babic/paradigms/main/img/mergesort.png"></p>
 
-<p align="center"><iframe width="560" height="315" src="https://www.youtube.com/embed/ZRPoEKHXTJg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></p>
+<iframe width=100% height=100% src="https://www.youtube.com/embed/ZRPoEKHXTJg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ```
 proc {Split Xs ?Ys ?Zs}
