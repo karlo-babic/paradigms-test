@@ -1,3 +1,5 @@
 name: Paradigms-test
 title: null
 markdown: GFM
+markdown:
+    escape_markup: false
