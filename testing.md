@@ -754,14 +754,88 @@ end
 #### Exercise 3
 - Implement breadth-first traversal (BFSAcc) that calculates a list of key/value pairs (with accumulator, similarly as is done with the depth-first algorithm).
 
-#### Assignment 8
+#### Assignment 7
 - Write a function (ListToTree) that takes an unordered list of key/value pairs and returnes an ordered binary tree.
 - Use the function DFSAcc to turn the ordered binary tree into an ordered list.
+
+## 4. Higher-order programming
+- Higher-order programming is the collection of programming techniques that become available when using procesure (or function) values in programs.
+
+### Basic operations
+- Four basic operations that underlie all the techniques of higher-order programming:
+    - **Procedural abstraction**: the ability to convert any statement into a procedure value.
+    - **Genericity**: the ability to pass procedure values as arguments to a procedure call.
+    - **Instantiation**: the ability to return procedure values as results from a procedure call.
+    - **Embedding**: the ability to put procedure values in data structures.
+
+#### Procedural abstraction
+- Any statement can be packaged into a procedure, which does not execute the statement, but instead creates a procedure value (a closure).
+- Executing the procedure value gives exactly the same result as executing the statement.
+
+#### Genericity
+- To make a function generic is to let any specific entity in the function body become an argument of the function.
+    - The specific entity is given when the function is called.
+- Consider the function *SumList*, which we will make a generic version of:
+```
+fun {SumList L}
+    case L
+    of nil then 0
+    [] X|L1 then X+{SumList L1}
+    end
+end
+```
+- This function has two specific entities: the number **zero** and the operation **plus**. The zero is a neutral element for the plus operation.
+    - *Any* neutral element and *any* operation are possible. We give them as parameters, which gives the following generic function:
+```
+fun {FoldR L F U}
+    case L
+    of nil then U
+    [] X|L1 then {F X {FoldR L1 F U}}
+    end
+end
+```
+- SumList definition as a special case of FoldR:
+```
+fun {SumList L}
+    {FoldR L fun {$ X Y} X+Y end 0}
+end
+```
+
+#### Exercise 4
+- Use *FoldR* to define the function "ProductList" that calculates the product of all elements in the list.
+- Use *FoldR* to define the function "Some" that returnes *true* if there is at least one *true* in the list.
+
+#### Instantiation
+- An example of instantiation is a function *MakeSort* that returnes a sorting function:
+```
+fun {MakeSort F}
+    fun {$ L}
+        {Sort L F}
+    end
+end
+```
+
+#### Embedding
+- Procedure values can be put in data structures. This has many uses:
+    - **Explicit lazy evaluation** (delayed evaluation): building a data structure on demand.
+    - **Modules**: records that group together a set of related operations.
+    - **Software component**: a generic procedure that takes a set of modules as input arguments and returnes a new module.
+
+## 5. Abstract data types
+- A *data type* (or simply *type*) is a set of values together with a set of operations on these values.
+- The declarative model comes with a predefined set of types.
+    - In Addition to these, the user is free to define new types.
+- A type is *abstract* if it is completely defined by its set of operations, regardless of the implementation.
+    - It is possible to change the implementation of the type without changing its use.
+
+### A declarative stack
+- A stack is a simple example of an abstract data type.
+    - \<Stack T\> contains elements of type T (T being of any type).
 
 ---
 
 <div align="center"><b>
   <a href="1-Introduction-to-Programming-Concepts.html" style="font-size:64px; text-decoration:none"> < </a>
   <a href="Contents.html" style="font-size:64px; text-decoration:none"> ^ </a>
-  <a href="" style="font-size:64px; text-decoration:none">  </a>
+  <a href="3-Explicit-State.html" style="font-size:64px; text-decoration:none"> > </a>
 </b></div>
