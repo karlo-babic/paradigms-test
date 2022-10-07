@@ -2,6 +2,4 @@ name: Paradigms-test
 title: null
 markdown: GFM
 
-plugins:
-- jekyll-remote-theme
-remote_theme: just-the-docs/just-the-docs
+latex: mathjax
