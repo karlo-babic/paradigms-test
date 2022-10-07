@@ -246,6 +246,7 @@ end
 - Factorial mathematical definition:
     - <img src="https://render.githubusercontent.com/render/math?math=\large 0! = 1">
     - <img src="https://render.githubusercontent.com/render/math?math=\large n! = n*(n-1)! \quad if \quad n>0">
+    - $\large n! = n*(n-1)! \quad if \quad n>0$
 - Implementation:
 ```
 fun {Fact N}
